@@ -46,9 +46,11 @@ export const vehicleCategories: VehicleCategory[] = [
   {
     id: "compact-suv",
     name: "Compact SUVs",
-    description: "A higher driving position and flexible space for mixed town and country roads.",
+    description:
+      "A higher driving position and flexible space for mixed town and country roads. Includes our Suzuki Fronx (2024, automatic).",
     bodyStyle: "compact-suv",
-    image: null,
+    // Supplied by RideWave, 24 Oct 2026.
+    image: { src: "/vehicles/suzuki-fronx-side.webp", alt: "Side view of a white Suzuki Fronx compact SUV" },
   },
   {
     id: "suv",
