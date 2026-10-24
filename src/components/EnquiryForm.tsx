@@ -194,7 +194,7 @@ export function EnquiryForm({ endpoint }: EnquiryFormProps) {
     "aria-describedby": errors[field] ? `${formId}-${field}-error` : undefined,
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
       update(field, event.target.value),
-    className: `w-full rounded-lg border bg-white px-4 text-base text-ink placeholder:text-ink/40 transition-colors focus:border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 focus-visible:outline-none ${
+    className: `w-full rounded-lg border bg-white px-4 text-base text-ink placeholder:text-ink/40 transition-[border-color,box-shadow] duration-200 focus:border-ink focus:shadow-[0_0_0_4px_rgba(11,11,12,0.08)] focus:outline-none focus-visible:outline-none ${
       errors[field] ? "border-danger" : "border-ink/20 hover:border-ink/40"
     }`,
   });
@@ -430,7 +430,7 @@ export function EnquiryForm({ endpoint }: EnquiryFormProps) {
         </p>
       )}
 
-      <div ref={statusRef} tabIndex={-1} aria-live="polite" className="focus:outline-none">
+      <div ref={statusRef} tabIndex={-1} aria-live="polite" data-status className="focus:outline-none">
         <StatusMessage status={status} />
       </div>
     </form>

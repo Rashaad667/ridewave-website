@@ -9,6 +9,7 @@ import { HowItWorks } from "@/components/HowItWorks";
 import { JsonLd } from "@/components/JsonLd";
 import { Logo } from "@/components/Logo";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
+import { RevealObserver } from "@/components/RevealObserver";
 import { VehicleCategories } from "@/components/VehicleCategories";
 import { WhyRideWave } from "@/components/WhyRideWave";
 
@@ -35,6 +36,7 @@ export default function Home() {
       </main>
       <Footer />
       <MobileCtaBar />
+      <RevealObserver />
     </>
   );
 }

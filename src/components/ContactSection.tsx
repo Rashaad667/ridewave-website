@@ -1,6 +1,6 @@
-import { Clock, Mail, MapPin, MessageCircle, Phone, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, Clock, Mail, MapPin, MessageCircle, Phone, type LucideIcon } from "lucide-react";
 import { siteConfig, whatsappHref } from "@/config/site";
-import { button, container } from "@/lib/ui";
+import { button, container, revealDelay } from "@/lib/ui";
 import { SectionHeading } from "./SectionHeading";
 
 type Method = { icon: LucideIcon; label: string; value: string; href?: string; external?: boolean };
@@ -38,7 +38,11 @@ export function ContactSection() {
         </SectionHeading>
 
         {methods.length > 0 ? (
-          <ul className={`grid gap-4 ${methods.length > 1 ? "sm:grid-cols-2" : ""}`}>
+          <ul
+            data-reveal
+            style={revealDelay(1, 3, 120)}
+            className={`grid gap-4 ${methods.length > 1 ? "sm:grid-cols-2" : ""}`}
+          >
             {methods.map(({ icon: Icon, label, value, href, external }) => {
               const content = (
                 <>
@@ -46,7 +50,10 @@ export function ContactSection() {
                     <Icon aria-hidden className="size-5" />
                   </span>
                   <span className="mt-4 block text-sm font-medium text-muted">{label}</span>
-                  <span className="mt-1 block font-semibold break-words text-ink">{value}</span>
+                  <span className="mt-1 block font-display text-xl font-bold tracking-[-0.01em] break-words text-ink">
+                    {value}
+                  </span>
+                  {external && <span className="mt-1 block text-sm text-muted">Opens WhatsApp</span>}
                 </>
               );
               return (
@@ -55,8 +62,12 @@ export function ContactSection() {
                     <a
                       href={href}
                       {...(external && { target: "_blank", rel: "noopener noreferrer" })}
-                      className="block h-full rounded-2xl border border-line bg-white p-6 transition-colors hover:border-ink/30"
+                      className="group relative block h-full rounded-2xl border border-line bg-white p-6 transition-[border-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-ink/30 hover:shadow-[0_20px_40px_-24px_rgba(0,0,0,0.25)] active:scale-[0.99] sm:p-7"
                     >
+                      <ArrowUpRight
+                        aria-hidden
+                        className="absolute top-6 right-6 size-5 text-ink/40 transition-[transform,color] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ink"
+                      />
                       {content}
                     </a>
                   ) : (

@@ -1,10 +1,11 @@
 import { ArrowRight } from "lucide-react";
+import { arrowNudge } from "@/lib/ui";
 import type { VehicleCategory } from "@/config/vehicles";
 import { VehicleVisual } from "./VehicleVisual";
 
 export function VehicleCard({ category }: { category: VehicleCategory }) {
   return (
-    <article className="group flex w-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-[border-color,box-shadow] duration-300 hover:border-ink/25 hover:shadow-[0_12px_32px_-16px_rgba(0,0,0,0.18)]">
+    <article className="group relative flex w-full flex-col overflow-hidden rounded-2xl border border-line bg-white transition-[border-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-ink/25 hover:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.28)] focus-within:border-ink/30">
       <VehicleVisual
         bodyStyle={category.bodyStyle}
         image={category.image}
@@ -18,10 +19,10 @@ export function VehicleCard({ category }: { category: VehicleCategory }) {
         <a
           href="#enquire"
           data-enquire-category={category.id}
-          className="mt-6 inline-flex min-h-11 items-center gap-2 self-start text-[0.95rem] font-semibold text-ink underline-offset-4 hover:underline"
+          className="mt-6 inline-flex min-h-11 items-center gap-2 self-start text-[0.95rem] font-semibold text-ink underline-offset-4 transition-opacity hover:underline active:opacity-60 after:absolute after:inset-0 after:content-['']"
         >
           Enquire about {category.name}
-          <ArrowRight aria-hidden className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          <ArrowRight aria-hidden className={arrowNudge} />
         </a>
       </div>
     </article>

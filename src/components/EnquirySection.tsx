@@ -1,5 +1,5 @@
 import { ClipboardList, ShieldCheck } from "lucide-react";
-import { container } from "@/lib/ui";
+import { container, revealDelay } from "@/lib/ui";
 import { EnquiryForm } from "./EnquiryForm";
 import { SectionHeading } from "./SectionHeading";
 
@@ -14,7 +14,7 @@ export function EnquirySection() {
           <SectionHeading id="enquire-title" eyebrow="Rental enquiry" title="Send an Enquiry.">
             <p>Share your dates and requirements. We&rsquo;ll review them and get back to you to discuss options.</p>
           </SectionHeading>
-          <ul className="mt-10 space-y-5 text-ink">
+          <ul data-reveal style={revealDelay(1, 3, 120)} className="mt-10 space-y-5 text-ink">
             <li className="flex gap-4">
               <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-line bg-white">
                 <ClipboardList aria-hidden className="size-5" />
@@ -40,7 +40,11 @@ export function EnquirySection() {
           </ul>
         </div>
 
-        <div className="relative rounded-2xl border border-line bg-white p-6 shadow-[0_24px_48px_-32px_rgba(0,0,0,0.25)] sm:p-10">
+        <div
+          data-reveal
+          style={revealDelay(1, 3, 120)}
+          className="relative rounded-2xl border border-line bg-white p-5 shadow-[0_24px_48px_-32px_rgba(0,0,0,0.25)] sm:p-10"
+        >
           <EnquiryForm endpoint={endpoint} />
         </div>
       </div>

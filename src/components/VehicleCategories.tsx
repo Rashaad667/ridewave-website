@@ -1,6 +1,6 @@
-import { Info } from "lucide-react";
+import { ArrowRight, Info } from "lucide-react";
 import { vehicleCategories } from "@/config/vehicles";
-import { container } from "@/lib/ui";
+import { arrowNudge, button, container, revealDelay } from "@/lib/ui";
 import { SectionHeading } from "./SectionHeading";
 import { VehicleCard } from "./VehicleCard";
 
@@ -15,7 +15,11 @@ export function VehicleCategories() {
               suits you and we&rsquo;ll talk through the options.
             </p>
           </SectionHeading>
-          <p className="flex max-w-sm items-start gap-2.5 rounded-lg border border-line bg-mist px-4 py-3 text-sm leading-relaxed text-muted">
+          <p
+            data-reveal
+            style={revealDelay(1, 3, 120)}
+            className="flex max-w-sm items-start gap-2.5 rounded-lg border border-line bg-mist px-4 py-3 text-sm leading-relaxed text-muted"
+          >
             <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-ink" />
             <span>
               These are representative vehicle categories, not a live list of available vehicles. Ask us what is
@@ -25,25 +29,27 @@ export function VehicleCategories() {
         </div>
 
         <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {vehicleCategories.map((category) => (
-            <li key={category.id} className="flex">
+          {vehicleCategories.map((category, index) => (
+            <li key={category.id} data-reveal style={revealDelay(index)} className="flex">
               <VehicleCard category={category} />
             </li>
           ))}
-          <li className="flex">
-            <div className="flex w-full flex-col justify-between rounded-2xl bg-ink p-7 text-white on-dark">
-              <div>
+          <li data-reveal style={revealDelay(vehicleCategories.length)} className="flex">
+            <div className="on-dark relative flex w-full flex-col justify-between overflow-hidden rounded-2xl bg-ink p-7 text-white">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -right-1/4 -bottom-1/3 size-[90%] rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.08),transparent)]"
+              />
+              <div className="relative">
                 <h3 className="font-display text-xl font-bold tracking-[-0.015em]">Need something else?</h3>
                 <p className="mt-3 leading-relaxed text-white/70">
                   Have a particular make, model or requirement in mind? Tell us about it in your enquiry and we&rsquo;ll
                   let you know what we can arrange.
                 </p>
               </div>
-              <a
-                href="#enquire"
-                className="mt-8 inline-flex min-h-12 items-center justify-center rounded-lg bg-white px-6 text-[0.95rem] font-semibold text-ink transition-colors hover:bg-white/85"
-              >
+              <a href="#enquire" className={`${button.inverse} relative mt-8`}>
                 Discuss Your Requirements
+                <ArrowRight aria-hidden className={arrowNudge} />
               </a>
             </div>
           </li>

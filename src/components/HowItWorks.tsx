@@ -1,5 +1,5 @@
 import { Info } from "lucide-react";
-import { container } from "@/lib/ui";
+import { container, revealDelay } from "@/lib/ui";
 import { SectionHeading } from "./SectionHeading";
 
 const steps = [
@@ -27,8 +27,20 @@ export function HowItWorks() {
 
         <ol className="mt-14 grid gap-5 md:grid-cols-3">
           {steps.map((step, index) => (
-            <li key={step.title} className="relative rounded-2xl border border-line bg-white p-7 sm:p-8">
-              <span aria-hidden className="font-display text-5xl leading-none font-bold tracking-[-0.04em] text-ink/15">
+            <li
+              key={step.title}
+              data-reveal
+              style={revealDelay(index, 3, 120)}
+              className="group relative overflow-hidden rounded-2xl border border-line bg-white p-7 transition-[border-color,box-shadow] duration-300 hover:border-ink/25 hover:shadow-[0_16px_40px_-24px_rgba(0,0,0,0.25)] sm:p-8"
+            >
+              <span
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-ink transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100"
+              />
+              <span
+                aria-hidden
+                className="font-display text-5xl leading-none font-bold tracking-[-0.04em] text-ink/15 transition-colors duration-300 group-hover:text-ink/30"
+              >
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-6 font-display text-xl font-bold tracking-[-0.015em]">
@@ -40,7 +52,10 @@ export function HowItWorks() {
           ))}
         </ol>
 
-        <p className="mt-8 flex items-start gap-3 rounded-xl border border-ink/15 bg-mist px-5 py-4 leading-relaxed text-ink">
+        <p
+          data-reveal
+          className="mt-8 flex items-start gap-3 rounded-xl border border-ink/15 bg-mist px-5 py-4 leading-relaxed text-ink"
+        >
           <Info aria-hidden className="mt-1 size-4 shrink-0" />
           <span>
             <strong className="font-semibold">Please note:</strong> submitting an enquiry on this website does not
