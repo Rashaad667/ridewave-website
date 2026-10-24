@@ -2,8 +2,9 @@
  * Vehicle categories shown in "Explore Vehicles" and offered in the
  * enquiry form.
  *
- * These are REPRESENTATIVE categories, not a confirmed fleet list. When the
- * real fleet is confirmed, edit this file:
+ * These are REPRESENTATIVE categories, not a confirmed fleet list. Actual
+ * vehicles live in ./fleet.ts; a category card is hidden on the page when a
+ * fleet vehicle already covers it (it stays in the enquiry form). Edit here to:
  *  - remove categories the business does not offer, or add new ones;
  *  - set `image` to a licensed photo placed in /public/vehicles/;
  *  - keep descriptions free of prices, availability or specifications
@@ -30,11 +31,9 @@ export const vehicleCategories: VehicleCategory[] = [
   {
     id: "hatchback",
     name: "Hatchbacks",
-    description:
-      "Compact and easy to park. A practical choice for city driving and everyday errands. Includes our Suzuki Baleno Zeta (2017, automatic).",
+    description: "Compact and easy to park. A practical choice for city driving and everyday errands.",
     bodyStyle: "hatchback",
-    // Supplied by RideWave, 24 Oct 2026.
-    image: { src: "/vehicles/suzuki-baleno-side.webp", alt: "Side view of a silver Suzuki Baleno hatchback" },
+    image: null,
   },
   {
     id: "sedan",
@@ -46,11 +45,9 @@ export const vehicleCategories: VehicleCategory[] = [
   {
     id: "compact-suv",
     name: "Compact SUVs",
-    description:
-      "A higher driving position and flexible space for mixed town and country roads. Includes our Suzuki Fronx (2024, automatic).",
+    description: "A higher driving position and flexible space for mixed town and country roads.",
     bodyStyle: "compact-suv",
-    // Supplied by RideWave, 24 Oct 2026.
-    image: { src: "/vehicles/suzuki-fronx-side.webp", alt: "Side view of a white Suzuki Fronx compact SUV" },
+    image: null,
   },
   {
     id: "suv",

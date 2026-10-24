@@ -1,8 +1,10 @@
 "use client";
 
-import { AlertCircle, CheckCircle2, Loader2, MessageCircle, Send } from "lucide-react";
+import Image from "next/image";
+import { AlertCircle, CheckCircle2, Loader2, MessageCircle, Send, X } from "lucide-react";
 import { useEffect, useId, useRef, useState, useSyncExternalStore, useTransition, type ReactNode } from "react";
 import { submitEnquiry } from "@/lib/submit";
+import { vehicleLabel, type FleetVehicle } from "@/config/fleet";
 import { whatsappHref } from "@/config/site";
 import {
   MAX_LENGTH,
@@ -21,6 +23,7 @@ const EMPTY: EnquiryInput = {
   fullName: "",
   phone: "",
   email: "",
+  vehicle: "",
   category: "",
   makeModel: "",
   startDate: "",
@@ -54,10 +57,14 @@ type Status =
 type EnquiryFormProps = {
   /** Public form endpoint from NEXT_PUBLIC_ENQUIRY_ENDPOINT, or null when not configured. */
   endpoint: string | null;
+  /** Vehicle from a details page; preselected and named in the enquiry. */
+  vehicle?: FleetVehicle | null;
 };
 
-export function EnquiryForm({ endpoint }: EnquiryFormProps) {
-  const [values, setValues] = useState<EnquiryInput>(EMPTY);
+export function EnquiryForm({ endpoint, vehicle = null }: EnquiryFormProps) {
+  const [values, setValues] = useState<EnquiryInput>(() =>
+    vehicle ? { ...EMPTY, vehicle: vehicle.slug, category: vehicle.categoryId } : EMPTY,
+  );
   const [errors, setErrors] = useState<EnquiryErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
@@ -227,6 +234,30 @@ export function EnquiryForm({ endpoint }: EnquiryFormProps) {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {vehicle && values.vehicle === vehicle.slug && (
+        <div className="flex items-center gap-4 rounded-xl border border-ink/15 bg-mist p-3 pr-4">
+          <Image
+            src={vehicle.photos[0]?.thumb}
+            alt=""
+            width={96}
+            height={54}
+            className="h-14 w-24 shrink-0 rounded-lg object-cover"
+          />
+          <p className="min-w-0 flex-1 text-sm leading-snug">
+            <span className="block text-muted">Enquiring about</span>
+            <strong className="font-semibold text-ink">{vehicleLabel(vehicle)}</strong>
+          </p>
+          <button
+            type="button"
+            onClick={() => update("vehicle", "")}
+            className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg text-ink/60 transition-colors hover:bg-white hover:text-ink"
+            aria-label={`Remove ${vehicleLabel(vehicle)} from this enquiry`}
+          >
+            <X aria-hidden className="size-4" />
+          </button>
         </div>
       )}
 

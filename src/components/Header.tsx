@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { navLinks } from "@/config/site";
 import { button, container } from "@/lib/ui";
@@ -42,14 +43,14 @@ export function Header({ logo }: { logo: ReactNode }) {
       }`}
     >
       <div className={`${container} flex h-[4.5rem] items-center justify-between gap-6`}>
-        <a
-          href="#home"
+        <Link
+          href="/#home"
           className="shrink-0 transition-opacity hover:opacity-80"
           onClick={close}
           aria-label="RideWave Rentals — back to top"
         >
           {logo}
-        </a>
+        </Link>
 
         <nav aria-label="Main" className="hidden lg:block">
           <ul className="flex items-center gap-1">

@@ -75,8 +75,8 @@ export const siteConfig: SiteConfig = {
   },
   // Supplied by RideWave, 24 Oct 2026.
   heroImage: {
-    src: "/vehicles/suzuki-baleno-front.webp",
-    alt: "Silver Suzuki Baleno hatchback parked on a lakeside road in Colombo",
+    src: "/vehicles/baleno-2017-grey-front.webp",
+    alt: "Grey Suzuki Baleno hatchback parked on a lakeside road in Colombo",
   },
   contact: {
     phone: null, // TODO(before launch): confirmed phone number
@@ -96,11 +96,12 @@ export const siteConfig: SiteConfig = {
 /**
  * Final site URL, e.g. "https://www.ridewaverentals.lk".
  * Set NEXT_PUBLIC_SITE_URL in the hosting environment once the domain is
- * registered and connected. Until then canonical URLs and the sitemap are
- * left out rather than pointing at a domain that may not exist.
+ * registered and connected. On Netlify it falls back to the site's main
+ * address (Netlify's built-in URL variable) so share previews work; elsewhere
+ * canonical URLs and the sitemap are left out rather than guessed.
  */
 export function getSiteUrl(): URL | null {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const raw = (process.env.NEXT_PUBLIC_SITE_URL || process.env.URL)?.trim();
   if (!raw) return null;
   try {
     return new URL(raw);
@@ -118,10 +119,10 @@ export function whatsappHref(message?: string): string | null {
 }
 
 export const navLinks = [
-  { href: "#home", label: "Home" },
-  { href: "#vehicles", label: "Explore Vehicles" },
-  { href: "#why-ridewave", label: "Why RideWave" },
-  { href: "#how-it-works", label: "How It Works" },
-  { href: "#faq", label: "FAQ" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#home", label: "Home" },
+  { href: "/#vehicles", label: "Explore Vehicles" },
+  { href: "/#why-ridewave", label: "Why RideWave" },
+  { href: "/#how-it-works", label: "How It Works" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/#contact", label: "Contact" },
 ] as const;

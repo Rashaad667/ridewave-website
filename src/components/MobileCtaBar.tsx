@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { whatsappHref } from "@/config/site";
 import { button } from "@/lib/ui";
 
-/** Sections where the bar would only repeat what is already on screen. */
-const HIDE_OVER = ["#home", "#enquire", "#site-footer"];
+/** Sections where the bar would only repeat what is already on screen (home or vehicle page). */
+const HIDE_OVER = ["#home", "#vehicle-overview", "#enquire", "#site-footer"];
 
 /**
  * Fixed bottom call to action on phones, where most visitors arrive from

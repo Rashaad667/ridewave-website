@@ -1,8 +1,15 @@
 import { ArrowRight, Info } from "lucide-react";
+import { fleet } from "@/config/fleet";
 import { vehicleCategories } from "@/config/vehicles";
 import { arrowNudge, button, container, revealDelay } from "@/lib/ui";
 import { SectionHeading } from "./SectionHeading";
+import { FleetCard } from "./FleetCard";
 import { VehicleCard } from "./VehicleCard";
+
+/** Category cards are shown only for types not already covered by a fleet vehicle. */
+const otherCategories = vehicleCategories.filter(
+  (category) => !fleet.some((vehicle) => vehicle.categoryId === category.id),
+);
 
 export function VehicleCategories() {
   return (
@@ -22,19 +29,18 @@ export function VehicleCategories() {
           >
             <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-ink" />
             <span>
-              These are representative vehicle categories, not a live list of available vehicles. Ask us what is
-              available for your dates.
+              Tap a vehicle to see its photos and details. Availability is confirmed when you enquire with your dates.
             </span>
           </p>
         </div>
 
-        <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {vehicleCategories.map((category, index) => (
-            <li key={category.id} data-reveal style={revealDelay(index)} className="flex">
-              <VehicleCard category={category} />
+        <ul aria-label="Our vehicles" className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {fleet.map((vehicle, index) => (
+            <li key={vehicle.slug} data-reveal style={revealDelay(index)} className="flex">
+              <FleetCard vehicle={vehicle} />
             </li>
           ))}
-          <li data-reveal style={revealDelay(vehicleCategories.length)} className="flex">
+          <li data-reveal style={revealDelay(fleet.length)} className="flex">
             <div className="on-dark relative flex w-full flex-col justify-between overflow-hidden rounded-2xl bg-ink p-7 text-white">
               <div
                 aria-hidden
@@ -54,6 +60,22 @@ export function VehicleCategories() {
             </div>
           </li>
         </ul>
+
+        {otherCategories.length > 0 && (
+          <>
+            <div data-reveal className="mt-16 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <h3 className="font-display text-2xl font-bold tracking-[-0.02em]">Other vehicle types</h3>
+              <p className="text-sm text-muted">Representative categories. Ask us what we can arrange.</p>
+            </div>
+            <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {otherCategories.map((category, index) => (
+                <li key={category.id} data-reveal style={revealDelay(index)} className="flex">
+                  <VehicleCard category={category} />
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
     </section>
   );

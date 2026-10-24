@@ -3,12 +3,15 @@
  * server action so both apply the same rules.
  */
 
+import { findVehicle, vehicleLabel } from "@/config/fleet";
 import { NOT_SURE_CATEGORY, vehicleCategories } from "@/config/vehicles";
 
 export type EnquiryInput = {
   fullName: string;
   phone: string;
   email: string;
+  /** Slug of a specific fleet vehicle (from its details page), or "". */
+  vehicle: string;
   category: string;
   makeModel: string;
   startDate: string;
@@ -24,6 +27,7 @@ export const MAX_LENGTH: Record<EnquiryField, number> = {
   fullName: 100,
   phone: 30,
   email: 254,
+  vehicle: 60,
   category: 40,
   makeModel: 100,
   startDate: 10,
@@ -52,6 +56,8 @@ export function sanitizeEnquiry(raw: Record<string, unknown>): EnquiryInput {
     fullName: clean(raw.fullName, MAX_LENGTH.fullName),
     phone: clean(raw.phone, MAX_LENGTH.phone),
     email: clean(raw.email, MAX_LENGTH.email),
+    // Only known fleet vehicles are kept.
+    vehicle: findVehicle(clean(raw.vehicle, MAX_LENGTH.vehicle)) ? clean(raw.vehicle, MAX_LENGTH.vehicle) : "",
     category: clean(raw.category, MAX_LENGTH.category),
     makeModel: clean(raw.makeModel, MAX_LENGTH.makeModel),
     startDate: clean(raw.startDate, MAX_LENGTH.startDate),
@@ -144,7 +150,9 @@ export function categoryName(id: string): string {
 
 /** Plain-text summary used for WhatsApp messages and webhook payloads. */
 export function formatEnquiryMessage(input: EnquiryInput): string {
+  const vehicle = input.vehicle ? findVehicle(input.vehicle) : undefined;
   const details = [
+    vehicle && `Vehicle: ${vehicleLabel(vehicle)}`,
     `Name: ${input.fullName}`,
     `Phone: ${input.phone}`,
     input.email && `Email: ${input.email}`,
@@ -156,7 +164,9 @@ export function formatEnquiryMessage(input: EnquiryInput): string {
     input.notes && `Additional requirements: ${input.notes}`,
   ];
   return [
-    "Hello RideWave Rentals, I would like to enquire about a rental.",
+    vehicle
+      ? `Hello RideWave Rentals, I would like to enquire about renting the ${vehicleLabel(vehicle)}.`
+      : "Hello RideWave Rentals, I would like to enquire about a rental.",
     "",
     ...details.filter((line): line is string => Boolean(line)),
   ].join("\n");
