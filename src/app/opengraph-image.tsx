@@ -2,6 +2,9 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
+// Required for the static export (output: "export").
+export const dynamic = "force-static";
+
 /**
  * Default social sharing image built from the official logo.
  * To use a custom image instead, delete this file and add

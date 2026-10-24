@@ -4,8 +4,8 @@ import { EnquiryForm } from "./EnquiryForm";
 import { SectionHeading } from "./SectionHeading";
 
 export function EnquirySection() {
-  // Read on the server only; the webhook URL itself never reaches the browser.
-  const webhookEnabled = Boolean(process.env.ENQUIRY_WEBHOOK_URL?.trim().startsWith("https://"));
+  const raw = process.env.NEXT_PUBLIC_ENQUIRY_ENDPOINT?.trim();
+  const endpoint = raw?.startsWith("https://") ? raw : null;
 
   return (
     <section id="enquire" aria-labelledby="enquire-title" className="border-t border-line bg-mist py-20 sm:py-28">
@@ -41,7 +41,7 @@ export function EnquirySection() {
         </div>
 
         <div className="relative rounded-2xl border border-line bg-white p-6 shadow-[0_24px_48px_-32px_rgba(0,0,0,0.25)] sm:p-10">
-          <EnquiryForm webhookEnabled={webhookEnabled} />
+          <EnquiryForm endpoint={endpoint} />
         </div>
       </div>
     </section>

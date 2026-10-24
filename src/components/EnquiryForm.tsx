@@ -2,7 +2,7 @@
 
 import { AlertCircle, CheckCircle2, Loader2, MessageCircle, Send } from "lucide-react";
 import { useEffect, useId, useRef, useState, useSyncExternalStore, useTransition, type ReactNode } from "react";
-import { submitEnquiry } from "@/app/actions";
+import { submitEnquiry } from "@/lib/submit";
 import { whatsappHref } from "@/config/site";
 import {
   MAX_LENGTH,
@@ -52,11 +52,11 @@ type Status =
   | { kind: "unavailable" };
 
 type EnquiryFormProps = {
-  /** True when ENQUIRY_WEBHOOK_URL is configured on the server. */
-  webhookEnabled: boolean;
+  /** Public form endpoint from NEXT_PUBLIC_ENQUIRY_ENDPOINT, or null when not configured. */
+  endpoint: string | null;
 };
 
-export function EnquiryForm({ webhookEnabled }: EnquiryFormProps) {
+export function EnquiryForm({ endpoint }: EnquiryFormProps) {
   const [values, setValues] = useState<EnquiryInput>(EMPTY);
   const [errors, setErrors] = useState<EnquiryErrors>({});
   const [submitted, setSubmitted] = useState(false);
@@ -77,7 +77,7 @@ export function EnquiryForm({ webhookEnabled }: EnquiryFormProps) {
   const formId = useId();
 
   const whatsappEnabled = whatsappHref() !== null;
-  const mode = webhookEnabled ? "webhook" : whatsappEnabled ? "whatsapp" : "none";
+  const mode = endpoint ? "webhook" : whatsappEnabled ? "whatsapp" : "none";
   const busy = isPending || status.kind === "sending";
 
   useEffect(() => {
@@ -122,7 +122,7 @@ export function EnquiryForm({ webhookEnabled }: EnquiryFormProps) {
 
     const fingerprint = JSON.stringify(clean);
 
-    if (mode === "webhook") {
+    if (mode === "webhook" && endpoint) {
       if (lastSent.current === fingerprint) {
         setStatus({
           kind: "error",
@@ -134,7 +134,7 @@ export function EnquiryForm({ webhookEnabled }: EnquiryFormProps) {
       setStatus({ kind: "sending" });
       startTransition(async () => {
         try {
-          const result = await submitEnquiry(clean, {
+          const result = await submitEnquiry(endpoint, clean, {
             startedAt: startedAt.current,
             website: honeypot.current?.value ?? "",
           });
@@ -142,7 +142,6 @@ export function EnquiryForm({ webhookEnabled }: EnquiryFormProps) {
             lastSent.current = fingerprint;
             setStatus({ kind: "sent" });
           } else {
-            if (result.errors) setErrors(result.errors);
             setStatus({ kind: "error", message: result.message });
           }
         } catch {
