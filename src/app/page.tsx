@@ -10,6 +10,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { Logo } from "@/components/Logo";
 import { MobileCtaBar } from "@/components/MobileCtaBar";
 import { RevealObserver } from "@/components/RevealObserver";
+import { Reviews } from "@/components/Reviews";
 import { VehicleCategories } from "@/components/VehicleCategories";
 import { WhyRideWave } from "@/components/WhyRideWave";
 
@@ -29,6 +30,7 @@ export default function Home() {
         <VehicleCategories />
         <WhyRideWave />
         <HowItWorks />
+        <Reviews />
         <EnquirySection />
         <ContactSection />
         <Faq />
