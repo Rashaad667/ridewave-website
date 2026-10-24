@@ -73,7 +73,11 @@ export const siteConfig: SiteConfig = {
     height: 722,
     alt: "RideWave Rentals",
   },
-  heroImage: null, // TODO(before launch): licensed hero photo
+  // Supplied by RideWave, 24 Oct 2026.
+  heroImage: {
+    src: "/vehicles/suzuki-baleno-front.webp",
+    alt: "Silver Suzuki Baleno hatchback parked on a lakeside road in Colombo",
+  },
   contact: {
     phone: null, // TODO(before launch): confirmed phone number
     whatsapp: "94710950688", // Confirmed by RideWave (071 0950 688), 24 Oct 2026

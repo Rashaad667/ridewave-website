@@ -30,9 +30,11 @@ export const vehicleCategories: VehicleCategory[] = [
   {
     id: "hatchback",
     name: "Hatchbacks",
-    description: "Compact and easy to park. A practical choice for city driving and everyday errands.",
+    description:
+      "Compact and easy to park. A practical choice for city driving and everyday errands. Includes our Suzuki Baleno Zeta (2017, automatic).",
     bodyStyle: "hatchback",
-    image: null,
+    // Supplied by RideWave, 24 Oct 2026.
+    image: { src: "/vehicles/suzuki-baleno-side.webp", alt: "Side view of a silver Suzuki Baleno hatchback" },
   },
   {
     id: "sedan",
