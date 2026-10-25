@@ -47,9 +47,15 @@ export const viewport: Viewport = {
   colorScheme: "light dark",
 };
 
+const revealBootstrap = `(function(){var d=document.documentElement;d.classList.add("js-reveal");setTimeout(function(){if(!window.__rwReveal)d.classList.remove("js-reveal")},2500)})();`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en-GB" className={`${inter.variable} ${archivo.variable}`}>
+    <html lang="en-GB" className={`${inter.variable} ${archivo.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Enables scroll reveals before first paint; undone if the observer never starts. */}
+        <script dangerouslySetInnerHTML={{ __html: revealBootstrap }} />
+      </head>
       <body>{children}</body>
     </html>
   );

@@ -43,12 +43,17 @@ export function Faq() {
           <p>Quick answers about how enquiries work. For anything else, please get in touch.</p>
         </SectionHeading>
 
-        <div className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-white">
+        <div data-reveal className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-white">
           {faqs.map((faq) => (
-            <details key={faq.question} className="group">
-              <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-left font-semibold text-ink transition-colors hover:bg-mist/60 sm:px-7">
+            <details key={faq.question} className="faq-item group">
+              <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-left font-semibold text-ink transition-colors select-none hover:bg-mist/60 active:bg-mist sm:px-7">
                 <span className="text-base sm:text-[1.05rem]">{faq.question}</span>
-                <Plus aria-hidden className="size-5 shrink-0 transition-transform duration-200 group-open:rotate-45" />
+                <span
+                  aria-hidden
+                  className="inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-line transition-[transform,background-color,color,border-color] duration-300 group-open:rotate-45 group-open:border-ink group-open:bg-ink group-open:text-white"
+                >
+                  <Plus className="size-4" />
+                </span>
               </summary>
               <p className="px-6 pb-6 leading-relaxed text-muted sm:px-7">{faq.answer}</p>
             </details>

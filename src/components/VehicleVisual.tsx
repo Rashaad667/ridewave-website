@@ -56,6 +56,8 @@ type VehicleVisualProps = {
   sizes: string;
   priority?: boolean;
   className?: string;
+  /** Traces the placeholder outline once on load (used in the hero). */
+  animateDraw?: boolean;
 };
 
 export function VehicleVisual({
@@ -66,11 +68,19 @@ export function VehicleVisual({
   sizes,
   priority,
   className = "",
+  animateDraw = false,
 }: VehicleVisualProps) {
   if (image) {
     return (
       <div className={`relative overflow-hidden ${className}`}>
-        <Image src={image.src} alt={image.alt} fill sizes={sizes} priority={priority} className="object-cover" />
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          sizes={sizes}
+          priority={priority}
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+        />
       </div>
     );
   }
@@ -88,24 +98,38 @@ export function VehicleVisual({
           : "bg-[radial-gradient(120%_90%_at_70%_15%,#ffffff_0%,#f3f3f1_60%,#ebebe8_100%)]"
       } ${className}`}
     >
+      {dark && (
+        <div
+          aria-hidden
+          className="absolute inset-x-[10%] bottom-[8%] h-[22%] rounded-[50%] bg-[radial-gradient(closest-side,rgba(255,255,255,0.10),transparent)]"
+        />
+      )}
       <svg
         viewBox="0 0 320 130"
         aria-hidden
-        className={`absolute inset-x-[8%] bottom-[14%] w-[84%] ${dark ? "text-white/55" : "text-ink/30"}`}
+        className={`absolute inset-x-[8%] bottom-[14%] w-[84%] transition-transform duration-700 ease-out group-hover:scale-[1.04] ${
+          dark ? "text-white/60" : "text-ink/30"
+        } ${animateDraw ? "motion-draw" : ""}`}
         fill="none"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinejoin="round"
         strokeLinecap="round"
       >
-        <path d="M4 119h312" strokeWidth="1.25" opacity="0.6" />
-        <path d={shape.body} />
-        <path d={shape.glass} strokeWidth="1.5" opacity="0.8" />
-        <path d={`M${shape.sill[0]} 98H${shape.sill[1]}`} />
+        <path d="M4 119h312" strokeWidth="1.25" opacity="0.6" pathLength={1} />
+        <path d={shape.body} pathLength={1} />
+        <path d={shape.glass} strokeWidth="1.5" opacity="0.8" pathLength={1} />
+        <path d={`M${shape.sill[0]} 98H${shape.sill[1]}`} pathLength={1} />
         {shape.wheels.map((cx) => (
           <g key={cx}>
-            <circle cx={cx} cy={119 - shape.r} r={shape.r} className={dark ? "fill-[#141416]" : "fill-[#f1f1ef]"} />
-            <circle cx={cx} cy={119 - shape.r} r={shape.r * 0.45} strokeWidth="1.5" />
+            <circle
+              cx={cx}
+              cy={119 - shape.r}
+              r={shape.r}
+              pathLength={1}
+              className={dark ? "fill-[#141416]" : "fill-[#f1f1ef]"}
+            />
+            <circle cx={cx} cy={119 - shape.r} r={shape.r * 0.45} strokeWidth="1.5" pathLength={1} />
           </g>
         ))}
       </svg>

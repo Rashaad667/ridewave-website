@@ -2,8 +2,9 @@
  * Vehicle categories shown in "Explore Vehicles" and offered in the
  * enquiry form.
  *
- * These are REPRESENTATIVE categories, not a confirmed fleet list. When the
- * real fleet is confirmed, edit this file:
+ * These are REPRESENTATIVE categories, not a confirmed fleet list. Actual
+ * vehicles live in ./fleet.ts; a category card is hidden on the page when a
+ * fleet vehicle already covers it (it stays in the enquiry form). Edit here to:
  *  - remove categories the business does not offer, or add new ones;
  *  - set `image` to a licensed photo placed in /public/vehicles/;
  *  - keep descriptions free of prices, availability or specifications

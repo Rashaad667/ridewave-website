@@ -12,8 +12,13 @@ type SectionHeadingProps = {
 export function SectionHeading({ id, eyebrow, title, children, align = "left", tone = "light" }: SectionHeadingProps) {
   const dark = tone === "dark";
   return (
-    <div className={align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
-      <p className={`text-xs font-semibold tracking-[0.16em] uppercase ${dark ? "text-white/60" : "text-muted"}`}>
+    <div data-reveal className={align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
+      <p
+        className={`flex items-center gap-3 text-xs font-semibold tracking-[0.16em] uppercase ${
+          dark ? "text-white/60" : "text-muted"
+        }`}
+      >
+        <span aria-hidden className={`h-px w-6 ${dark ? "bg-white/40" : "bg-ink/40"}`} />
         {eyebrow}
       </p>
       <h2
@@ -23,7 +28,11 @@ export function SectionHeading({ id, eyebrow, title, children, align = "left", t
         {title}
       </h2>
       {children && (
-        <div className={`mt-4 text-lg leading-relaxed ${dark ? "text-white/70" : "text-muted"}`}>{children}</div>
+        <div
+          className={`mt-4 text-[1.0625rem] leading-relaxed text-pretty sm:text-lg ${dark ? "text-white/70" : "text-muted"}`}
+        >
+          {children}
+        </div>
       )}
     </div>
   );

@@ -37,10 +37,10 @@ export function WhyRideWave() {
             </p>
           </SectionHeading>
         </div>
-        <ul className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
+        <ul data-reveal className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
           {points.map(({ icon: Icon, title, text }) => (
-            <li key={title} className="bg-white p-7 sm:p-8">
-              <span className="inline-flex size-11 items-center justify-center rounded-lg bg-ink text-white">
+            <li key={title} className="group bg-white p-7 transition-colors duration-300 hover:bg-[#fcfcfb] sm:p-8">
+              <span className="inline-flex size-11 items-center justify-center rounded-lg bg-ink text-white transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-0.5 group-hover:rotate-[-4deg]">
                 <Icon aria-hidden className="size-5" />
               </span>
               <h3 className="mt-5 font-display text-lg font-bold tracking-[-0.01em]">{title}</h3>

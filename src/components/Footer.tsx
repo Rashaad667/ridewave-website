@@ -10,7 +10,7 @@ export function Footer() {
   const contacts = contactMethods().filter((method) => method.href);
 
   return (
-    <footer className="border-t border-line bg-white pb-28 sm:pb-12">
+    <footer id="site-footer" className="border-t border-line bg-white pb-12">
       <div className={`${container} grid gap-12 pt-16 md:grid-cols-[1.4fr_1fr_1fr]`}>
         <div className="max-w-sm">
           <Logo height={72} />

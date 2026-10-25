@@ -78,6 +78,18 @@ Anything not confirmed is left out of the page rather than guessed.
 6. **Domain.** Once registered, set `NEXT_PUBLIC_SITE_URL`, for example `https://www.your-domain.lk`. This turns on canonical URLs, absolute social-sharing links and the sitemap.
 7. **Privacy policy.** The form collects names and phone numbers. If a privacy policy is prepared, publish it and set `privacyPolicyHref`. No link is shown until then.
 
+## Adding vehicles
+
+Each fleet vehicle lives in `src/config/fleet.ts` and gets a card in "Explore Vehicles" plus its own page at `/vehicles/<slug>/`, with a photo gallery and an enquiry form that names the vehicle.
+
+1. Add up to three photos to `public/vehicles/`, named `<model>-<year>-<colour>-front.webp`, `-side.webp` and `-rear.webp`, each with a small `-thumb.webp` copy (about 480px wide).
+2. Copy an entry in `fleet.ts`, give it a new `slug`, and fill in only confirmed details. Specs left empty (seats, fuel, engine, luggage, doors, air conditioning) show as "To be confirmed"; no price is shown unless `rate` is set.
+3. Run `npm run build` and check the new page.
+
+## Adding customer reviews
+
+Reviews live in `src/config/reviews.ts`. Copy the example in the comment at the top of that file into the `reviews` list, fill in the customer's exact words and star rating, and leave `author` and `date` as `null` unless you have them (add a name only with the customer's permission). Up to six reviews are shown; with more than one they appear in a two-column grid. Only add genuine feedback.
+
 ## How enquiries are delivered
 
 The form validates every field in the browser: required fields, phone and email format, a start date that isn't in the past, and a return date that isn't before the start date. Errors are shown as text next to each field and in a summary at the top of the form. Delivery then works in one of three ways:
