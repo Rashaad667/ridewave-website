@@ -63,7 +63,30 @@ const photos = (base: string, name: string, colour: string): VehiclePhoto[] =>
 
 export const fleet: FleetVehicle[] = [
   {
-    // Confirmed by RideWave, 24 Oct 2026: model, trim, year, transmission, colour, body type.
+    // Details and specifications supplied by RideWave, 25 Oct 2026.
+    slug: "toyota-axio-2015",
+    make: "Toyota",
+    model: "Axio",
+    variant: null,
+    year: 2015,
+    colour: "White",
+    transmission: "Automatic",
+    bodyType: "Sedan",
+    bodyStyle: "sedan",
+    categoryId: "sedan",
+    photos: photos("axio-2015-white", "Toyota Axio", "White"),
+    specs: {
+      seats: "5",
+      fuel: "Petrol",
+      engine: "1,300 cc",
+      luggage: "450 litres",
+      airConditioning: "Yes",
+      doors: "4",
+    },
+    rate: null,
+  },
+  {
+    // Details supplied by RideWave 24 Oct 2026; specifications 25 Oct 2026.
     slug: "suzuki-baleno-2017",
     make: "Suzuki",
     model: "Baleno",
@@ -75,11 +98,18 @@ export const fleet: FleetVehicle[] = [
     bodyStyle: "hatchback",
     categoryId: "hatchback",
     photos: photos("baleno-2017-grey", "Suzuki Baleno", "Grey"),
-    specs: {},
+    specs: {
+      seats: "5",
+      fuel: "Petrol",
+      engine: "1,200 cc",
+      luggage: "318 litres",
+      airConditioning: "Yes",
+      doors: "4",
+    },
     rate: null,
   },
   {
-    // Confirmed by RideWave, 24 Oct 2026: model, year, transmission, colour, body type (mini SUV).
+    // Details supplied by RideWave 24 Oct 2026; specifications 25 Oct 2026.
     slug: "suzuki-fronx-2024",
     make: "Suzuki",
     model: "Fronx",
@@ -87,11 +117,18 @@ export const fleet: FleetVehicle[] = [
     year: 2024,
     colour: "White",
     transmission: "Automatic",
-    bodyType: "Compact SUV",
+    bodyType: "Compact crossover",
     bodyStyle: "compact-suv",
     categoryId: "compact-suv",
     photos: photos("fronx-2024-white", "Suzuki Fronx", "White"),
-    specs: {},
+    specs: {
+      seats: "5",
+      fuel: "Petrol",
+      engine: "1,000 cc",
+      luggage: "304 litres",
+      airConditioning: "Yes",
+      doors: "4",
+    },
     rate: null,
   },
 ];
@@ -99,10 +136,10 @@ export const fleet: FleetVehicle[] = [
 export const SPEC_LABELS: Record<keyof VehicleSpecs, string> = {
   seats: "Seating capacity",
   fuel: "Fuel type",
-  engine: "Engine",
+  engine: "Engine capacity",
   luggage: "Luggage capacity",
-  doors: "Doors",
   airConditioning: "Air conditioning",
+  doors: "Doors",
 };
 
 export const vehicleName = (vehicle: FleetVehicle) => `${vehicle.make} ${vehicle.model}`;

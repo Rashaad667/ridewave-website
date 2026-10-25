@@ -2,7 +2,26 @@ import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, CalendarDays, CarFront, ChevronRight, Cog, MessageCircle, Palette } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Car,
+  CarFront,
+  ChevronRight,
+  Cog,
+  DoorOpen,
+  Factory,
+  Fuel,
+  Gauge,
+  Luggage,
+  MessageCircle,
+  Palette,
+  Snowflake,
+  Tag,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import { EnquirySection } from "@/components/EnquirySection";
 import { FleetCard } from "@/components/FleetCard";
 import { Footer } from "@/components/Footer";
@@ -41,18 +60,33 @@ export async function generateMetadata({ params }: PageProps<"/vehicles/[slug]">
     title,
     description,
     // Absolute URLs (canonical, share image) need the public domain, so they wait for NEXT_PUBLIC_SITE_URL.
-    ...(siteUrl && { metadataBase: siteUrl, alternates: { canonical: vehicleHref(vehicle) } }),
+    ...(siteUrl && {
+      metadataBase: siteUrl,
+      alternates: { canonical: vehicleHref(vehicle) },
+    }),
     openGraph: {
       type: "website",
       siteName: siteConfig.name,
       title,
       description,
       ...(siteUrl && { url: vehicleHref(vehicle) }),
-      ...(siteUrl && image && { images: [{ url: image.src, width: 1376, height: 768, alt: image.alt }] }),
+      ...(siteUrl &&
+        image && {
+          images: [{ url: image.src, width: 1376, height: 768, alt: image.alt }],
+        }),
     },
     twitter: { card: "summary_large_image", title, description },
   };
 }
+
+const SPEC_ICONS: Record<keyof VehicleSpecs, LucideIcon> = {
+  seats: Users,
+  fuel: Fuel,
+  engine: Gauge,
+  luggage: Luggage,
+  airConditioning: Snowflake,
+  doors: DoorOpen,
+};
 
 const delay = (ms: number) => ({ "--delay": `${ms}ms` }) as CSSProperties;
 
@@ -64,28 +98,47 @@ export default async function VehiclePage({ params }: PageProps<"/vehicles/[slug
   const whatsapp = whatsappHref(`Hello RideWave Rentals, I'd like to ask about the ${vehicleLabel(vehicle)}.`);
   const others = fleet.filter((other) => other.slug !== vehicle.slug);
 
+  const specKeys = Object.keys(SPEC_LABELS) as (keyof VehicleSpecs)[];
+  const spec = (key: keyof VehicleSpecs) =>
+    vehicle.specs[key]
+      ? [
+          {
+            icon: SPEC_ICONS[key],
+            label: SPEC_LABELS[key],
+            value: vehicle.specs[key] as string,
+          },
+        ]
+      : [];
+
+  // Headline facts beside the gallery; specs appear only once confirmed.
   const facts = [
     { icon: CalendarDays, label: "Model year", value: String(vehicle.year) },
     { icon: Cog, label: "Transmission", value: vehicle.transmission },
-    { icon: Palette, label: "Colour", value: vehicle.colour },
-    { icon: CarFront, label: "Body type", value: vehicle.bodyType },
+    ...spec("seats").map((item) => ({ ...item, label: "Seats" })),
+    ...spec("fuel"),
+    ...spec("engine").map((item) => ({ ...item, label: "Engine" })),
+    ...spec("luggage").map((item) => ({ ...item, label: "Luggage" })),
   ];
+  if (facts.length < 4) {
+    facts.push(
+      { icon: Palette, label: "Colour", value: vehicle.colour },
+      { icon: CarFront, label: "Body type", value: vehicle.bodyType },
+    );
+  }
 
-  const confirmed: { label: string; value: string }[] = [
-    { label: "Make", value: vehicle.make },
-    { label: "Model", value: vehicle.model },
-    ...(vehicle.variant ? [{ label: "Variant", value: vehicle.variant }] : []),
-    { label: "Model year", value: String(vehicle.year) },
-    { label: "Body type", value: vehicle.bodyType },
-    { label: "Transmission", value: vehicle.transmission },
-    { label: "Colour", value: vehicle.colour },
-    ...(Object.keys(SPEC_LABELS) as (keyof VehicleSpecs)[])
-      .filter((key) => vehicle.specs[key])
-      .map((key) => ({ label: SPEC_LABELS[key], value: vehicle.specs[key] as string })),
+  const confirmed: { icon: LucideIcon; label: string; value: string }[] = [
+    { icon: Factory, label: "Make", value: vehicle.make },
+    { icon: Car, label: "Model", value: vehicle.model },
+    ...(vehicle.variant ? [{ icon: Tag, label: "Variant", value: vehicle.variant }] : []),
+    { icon: CalendarDays, label: "Model year", value: String(vehicle.year) },
+    { icon: CarFront, label: "Body type", value: vehicle.bodyType },
+    { icon: Cog, label: "Transmission", value: vehicle.transmission },
+    { icon: Palette, label: "Colour", value: vehicle.colour },
+    ...specKeys.flatMap(spec),
   ];
-  const pending = (Object.keys(SPEC_LABELS) as (keyof VehicleSpecs)[])
+  const pending = specKeys
     .filter((key) => !vehicle.specs[key])
-    .map((key) => SPEC_LABELS[key]);
+    .map((key) => ({ icon: SPEC_ICONS[key], label: SPEC_LABELS[key] }));
 
   return (
     <>
@@ -158,7 +211,10 @@ export default async function VehiclePage({ params }: PageProps<"/vehicles/[slug
                   {vehicle.year} · {vehicle.transmission} · {vehicle.colour}
                 </p>
 
-                <dl style={delay(300)} className="motion-rise mt-8 grid grid-cols-2 gap-3">
+                <dl
+                  style={delay(300)}
+                  className="motion-rise mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3"
+                >
                   {facts.map(({ icon: Icon, label, value }) => (
                     <div
                       key={label}
@@ -183,7 +239,10 @@ export default async function VehiclePage({ params }: PageProps<"/vehicles/[slug
                   )}
                 </p>
 
-                <div style={delay(420)} className="motion-rise mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+                <div
+                  style={delay(420)}
+                  className="motion-rise mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row"
+                >
                   <a href="#enquire" className={`${button.primary} flex-1`}>
                     Enquire About This Vehicle
                     <ArrowRight aria-hidden className={arrowNudge} />
@@ -218,21 +277,35 @@ export default async function VehiclePage({ params }: PageProps<"/vehicles/[slug
                 Vehicle Details
               </h2>
               <p className="mt-4 leading-relaxed text-muted">
-                We only list details RideWave Rentals has confirmed for this vehicle. Anything else is marked as to be
-                confirmed. Just ask about it in your enquiry.
+                {pending.length > 0
+                  ? "We only list details RideWave Rentals has confirmed for this vehicle. Anything else is marked as to be confirmed. Just ask about it in your enquiry."
+                  : `Specifications for this ${vehicle.year} ${name}, as provided by RideWave Rentals. Ask us if there is anything else you would like to know.`}
               </p>
             </div>
-            <div data-reveal style={revealDelay(1, 3, 120)} className="overflow-hidden rounded-2xl border border-line bg-white">
+            <div
+              data-reveal
+              style={revealDelay(1, 3, 120)}
+              className="overflow-hidden rounded-2xl border border-line bg-white"
+            >
               <dl className="divide-y divide-line">
-                {confirmed.map(({ label, value }) => (
-                  <div key={label} className="flex items-baseline justify-between gap-6 px-5 py-4 sm:px-7">
-                    <dt className="text-muted">{label}</dt>
+                {confirmed.map(({ icon: Icon, label, value }) => (
+                  <div
+                    key={label}
+                    className="flex items-center justify-between gap-6 px-5 py-4 transition-colors duration-200 hover:bg-mist/60 sm:px-7"
+                  >
+                    <dt className="flex items-center gap-3 text-muted">
+                      <Icon aria-hidden className="size-[1.1rem] shrink-0 text-ink/70" />
+                      {label}
+                    </dt>
                     <dd className="text-right font-semibold text-ink">{value}</dd>
                   </div>
                 ))}
-                {pending.map((label) => (
-                  <div key={label} className="flex items-baseline justify-between gap-6 px-5 py-4 sm:px-7">
-                    <dt className="text-muted">{label}</dt>
+                {pending.map(({ icon: Icon, label }) => (
+                  <div key={label} className="flex items-center justify-between gap-6 px-5 py-4 sm:px-7">
+                    <dt className="flex items-center gap-3 text-muted">
+                      <Icon aria-hidden className="size-[1.1rem] shrink-0 text-ink/40" />
+                      {label}
+                    </dt>
                     <dd className="text-right text-sm text-muted italic">To be confirmed</dd>
                   </div>
                 ))}

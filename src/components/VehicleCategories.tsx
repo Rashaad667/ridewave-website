@@ -6,6 +6,9 @@ import { SectionHeading } from "./SectionHeading";
 import { FleetCard } from "./FleetCard";
 import { VehicleCard } from "./VehicleCard";
 
+/** With a full row of vehicles, the "Need something else?" card becomes a wide banner on desktop. */
+const wideExtraCard = fleet.length % 3 === 0;
+
 /** Category cards are shown only for types not already covered by a fleet vehicle. */
 const otherCategories = vehicleCategories.filter(
   (category) => !fleet.some((vehicle) => vehicle.categoryId === category.id),
@@ -40,20 +43,31 @@ export function VehicleCategories() {
               <FleetCard vehicle={vehicle} />
             </li>
           ))}
-          <li data-reveal style={revealDelay(fleet.length)} className="flex">
-            <div className="on-dark relative flex w-full flex-col justify-between overflow-hidden rounded-2xl bg-ink p-7 text-white">
+          <li
+            data-reveal
+            style={revealDelay(fleet.length)}
+            className={`flex ${wideExtraCard ? "lg:col-span-3" : ""}`}
+          >
+            <div
+              className={`on-dark relative flex w-full flex-col justify-between overflow-hidden rounded-2xl bg-ink p-7 text-white ${
+                wideExtraCard ? "lg:flex-row lg:items-center lg:gap-12 lg:p-10" : ""
+              }`}
+            >
               <div
                 aria-hidden
                 className="pointer-events-none absolute -right-1/4 -bottom-1/3 size-[90%] rounded-full bg-[radial-gradient(closest-side,rgba(255,255,255,0.08),transparent)]"
               />
               <div className="relative">
                 <h3 className="font-display text-xl font-bold tracking-[-0.015em]">Need something else?</h3>
-                <p className="mt-3 leading-relaxed text-white/70">
+                <p className="mt-3 max-w-2xl leading-relaxed text-white/70">
                   Have a particular make, model or requirement in mind? Tell us about it in your enquiry and we&rsquo;ll
                   let you know what we can arrange.
                 </p>
               </div>
-              <a href="#enquire" className={`${button.inverse} relative mt-8`}>
+              <a
+                href="#enquire"
+                className={`${button.inverse} relative mt-8 ${wideExtraCard ? "lg:mt-0 lg:shrink-0" : ""}`}
+              >
                 Discuss Your Requirements
                 <ArrowRight aria-hidden className={arrowNudge} />
               </a>
